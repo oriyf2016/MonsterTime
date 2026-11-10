@@ -1,6 +1,6 @@
 // ===== הגדרות =====
 // כשיהיה לאתר הראשי כתובת קבועה, שמים אותה כאן והקישור "חלק מ-MonsterFamily" יופיע למעלה
-const MONSTERFAMILY_URL = "";
+const MONSTERFAMILY_URL = "https://monsterfamily.onrender.com";
 
 const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, "0");
