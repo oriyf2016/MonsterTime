@@ -30,7 +30,7 @@ const LANGS = [
 
 const I18N = {
   he: {
-    settings: "הגדרות", language: "שפה", familyLink: "👾 חלק מ-MonsterFamily",
+    settings: "הגדרות", language: "שפה", familyLink: "👾 חזרה למשפחה",
     tabTimer: "⏳ טיימר", tabStopwatch: "⏱️ סטופר", tabClock: "🌍 שעון עולמי",
     hours: "שעות", minutes: "דקות", seconds: "שניות",
     p1: "דקה", p5: "5 דק׳", p10: "10 דק׳", p25: "25 דק׳", p60: "שעה",
@@ -52,7 +52,7 @@ const I18N = {
     }
   },
   en: {
-    settings: "Settings", language: "Language", familyLink: "👾 Part of MonsterFamily",
+    settings: "Settings", language: "Language", familyLink: "👾 Back to the family",
     tabTimer: "⏳ Timer", tabStopwatch: "⏱️ Stopwatch", tabClock: "🌍 World clock",
     hours: "Hours", minutes: "Minutes", seconds: "Seconds",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 hour",
@@ -74,7 +74,7 @@ const I18N = {
     }
   },
   ar: {
-    settings: "الإعدادات", language: "اللغة", familyLink: "👾 جزء من MonsterFamily",
+    settings: "الإعدادات", language: "اللغة", familyLink: "👾 العودة إلى العائلة",
     tabTimer: "⏳ مؤقت", tabStopwatch: "⏱️ ساعة إيقاف", tabClock: "🌍 الساعة العالمية",
     hours: "ساعات", minutes: "دقائق", seconds: "ثوانٍ",
     p1: "دقيقة", p5: "5 دقائق", p10: "10 دقائق", p25: "25 دقيقة", p60: "ساعة",
@@ -88,7 +88,7 @@ const I18N = {
     footer: "MonsterTime · أحد أفراد عائلة MonsterFamily 💜"
   },
   am: {
-    settings: "ቅንብሮች", language: "ቋንቋ", familyLink: "👾 የMonsterFamily አካል",
+    settings: "ቅንብሮች", language: "ቋንቋ", familyLink: "👾 ወደ ቤተሰቡ ተመለስ",
     tabTimer: "⏳ ሰዓት ቆጣሪ", tabStopwatch: "⏱️ የሩጫ ሰዓት", tabClock: "🌍 የዓለም ሰዓት",
     hours: "ሰዓታት", minutes: "ደቂቃዎች", seconds: "ሰከንዶች",
     p1: "1 ደቂቃ", p5: "5 ደቂቃ", p10: "10 ደቂቃ", p25: "25 ደቂቃ", p60: "1 ሰዓት",
@@ -102,7 +102,7 @@ const I18N = {
     footer: "MonsterTime · የMonsterFamily ቤተሰብ አባል 💜"
   },
   de: {
-    settings: "Einstellungen", language: "Sprache", familyLink: "👾 Teil von MonsterFamily",
+    settings: "Einstellungen", language: "Sprache", familyLink: "👾 Zurück zur Familie",
     tabTimer: "⏳ Timer", tabStopwatch: "⏱️ Stoppuhr", tabClock: "🌍 Weltuhr",
     hours: "Stunden", minutes: "Minuten", seconds: "Sekunden",
     p1: "1 Min.", p5: "5 Min.", p10: "10 Min.", p25: "25 Min.", p60: "1 Std.",
@@ -116,7 +116,7 @@ const I18N = {
     footer: "MonsterTime · ein Mitglied von MonsterFamily 💜"
   },
   el: {
-    settings: "Ρυθμίσεις", language: "Γλώσσα", familyLink: "👾 Μέλος της MonsterFamily",
+    settings: "Ρυθμίσεις", language: "Γλώσσα", familyLink: "👾 Πίσω στην οικογένεια",
     tabTimer: "⏳ Χρονοδιακόπτης", tabStopwatch: "⏱️ Χρονόμετρο", tabClock: "🌍 Παγκόσμιο ρολόι",
     hours: "Ώρες", minutes: "Λεπτά", seconds: "Δευτερόλεπτα",
     p1: "1 λεπτό", p5: "5 λεπτά", p10: "10 λεπτά", p25: "25 λεπτά", p60: "1 ώρα",
@@ -130,7 +130,7 @@ const I18N = {
     footer: "MonsterTime · μέλος της MonsterFamily 💜"
   },
   es: {
-    settings: "Ajustes", language: "Idioma", familyLink: "👾 Parte de MonsterFamily",
+    settings: "Ajustes", language: "Idioma", familyLink: "👾 Volver a la familia",
     tabTimer: "⏳ Temporizador", tabStopwatch: "⏱️ Cronómetro", tabClock: "🌍 Reloj mundial",
     hours: "Horas", minutes: "Minutos", seconds: "Segundos",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 hora",
@@ -144,7 +144,7 @@ const I18N = {
     footer: "MonsterTime · miembro de MonsterFamily 💜"
   },
   fa: {
-    settings: "تنظیمات", language: "زبان", familyLink: "👾 بخشی از MonsterFamily",
+    settings: "تنظیمات", language: "زبان", familyLink: "👾 بازگشت به خانواده",
     tabTimer: "⏳ تایمر", tabStopwatch: "⏱️ کرنومتر", tabClock: "🌍 ساعت جهانی",
     hours: "ساعت", minutes: "دقیقه", seconds: "ثانیه",
     p1: "۱ دقیقه", p5: "۵ دقیقه", p10: "۱۰ دقیقه", p25: "۲۵ دقیقه", p60: "۱ ساعت",
@@ -158,7 +158,7 @@ const I18N = {
     footer: "MonsterTime · عضوی از خانواده MonsterFamily 💜"
   },
   fr: {
-    settings: "Paramètres", language: "Langue", familyLink: "👾 Membre de MonsterFamily",
+    settings: "Paramètres", language: "Langue", familyLink: "👾 Retour à la famille",
     tabTimer: "⏳ Minuteur", tabStopwatch: "⏱️ Chronomètre", tabClock: "🌍 Horloge mondiale",
     hours: "Heures", minutes: "Minutes", seconds: "Secondes",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 heure",
@@ -172,7 +172,7 @@ const I18N = {
     footer: "MonsterTime · membre de MonsterFamily 💜"
   },
   hi: {
-    settings: "सेटिंग्स", language: "भाषा", familyLink: "👾 MonsterFamily का हिस्सा",
+    settings: "सेटिंग्स", language: "भाषा", familyLink: "👾 परिवार पर वापस जाएँ",
     tabTimer: "⏳ टाइमर", tabStopwatch: "⏱️ स्टॉपवॉच", tabClock: "🌍 विश्व घड़ी",
     hours: "घंटे", minutes: "मिनट", seconds: "सेकंड",
     p1: "1 मिनट", p5: "5 मिनट", p10: "10 मिनट", p25: "25 मिनट", p60: "1 घंटा",
@@ -186,7 +186,7 @@ const I18N = {
     footer: "MonsterTime · MonsterFamily का सदस्य 💜"
   },
   id: {
-    settings: "Pengaturan", language: "Bahasa", familyLink: "👾 Bagian dari MonsterFamily",
+    settings: "Pengaturan", language: "Bahasa", familyLink: "👾 Kembali ke keluarga",
     tabTimer: "⏳ Pengatur waktu", tabStopwatch: "⏱️ Stopwatch", tabClock: "🌍 Jam dunia",
     hours: "Jam", minutes: "Menit", seconds: "Detik",
     p1: "1 mnt", p5: "5 mnt", p10: "10 mnt", p25: "25 mnt", p60: "1 jam",
@@ -200,7 +200,7 @@ const I18N = {
     footer: "MonsterTime · anggota MonsterFamily 💜"
   },
   it: {
-    settings: "Impostazioni", language: "Lingua", familyLink: "👾 Parte di MonsterFamily",
+    settings: "Impostazioni", language: "Lingua", familyLink: "👾 Torna alla famiglia",
     tabTimer: "⏳ Timer", tabStopwatch: "⏱️ Cronometro", tabClock: "🌍 Orologio mondiale",
     hours: "Ore", minutes: "Minuti", seconds: "Secondi",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 ora",
@@ -214,7 +214,7 @@ const I18N = {
     footer: "MonsterTime · un membro di MonsterFamily 💜"
   },
   ja: {
-    settings: "設定", language: "言語", familyLink: "👾 MonsterFamily の一員",
+    settings: "設定", language: "言語", familyLink: "👾 ファミリーに戻る",
     tabTimer: "⏳ タイマー", tabStopwatch: "⏱️ ストップウォッチ", tabClock: "🌍 世界時計",
     hours: "時間", minutes: "分", seconds: "秒",
     p1: "1分", p5: "5分", p10: "10分", p25: "25分", p60: "1時間",
@@ -228,7 +228,7 @@ const I18N = {
     footer: "MonsterTime · MonsterFamily の家族 💜"
   },
   ko: {
-    settings: "설정", language: "언어", familyLink: "👾 MonsterFamily의 일원",
+    settings: "설정", language: "언어", familyLink: "👾 가족으로 돌아가기",
     tabTimer: "⏳ 타이머", tabStopwatch: "⏱️ 스톱워치", tabClock: "🌍 세계 시계",
     hours: "시간", minutes: "분", seconds: "초",
     p1: "1분", p5: "5분", p10: "10분", p25: "25분", p60: "1시간",
@@ -242,7 +242,7 @@ const I18N = {
     footer: "MonsterTime · MonsterFamily의 가족 💜"
   },
   nl: {
-    settings: "Instellingen", language: "Taal", familyLink: "👾 Onderdeel van MonsterFamily",
+    settings: "Instellingen", language: "Taal", familyLink: "👾 Terug naar de familie",
     tabTimer: "⏳ Timer", tabStopwatch: "⏱️ Stopwatch", tabClock: "🌍 Wereldklok",
     hours: "Uren", minutes: "Minuten", seconds: "Seconden",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 uur",
@@ -256,7 +256,7 @@ const I18N = {
     footer: "MonsterTime · lid van MonsterFamily 💜"
   },
   pl: {
-    settings: "Ustawienia", language: "Język", familyLink: "👾 Część MonsterFamily",
+    settings: "Ustawienia", language: "Język", familyLink: "👾 Wróć do rodziny",
     tabTimer: "⏳ Minutnik", tabStopwatch: "⏱️ Stoper", tabClock: "🌍 Zegar światowy",
     hours: "Godziny", minutes: "Minuty", seconds: "Sekundy",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 godz.",
@@ -270,7 +270,7 @@ const I18N = {
     footer: "MonsterTime · członek MonsterFamily 💜"
   },
   pt: {
-    settings: "Configurações", language: "Idioma", familyLink: "👾 Parte da MonsterFamily",
+    settings: "Configurações", language: "Idioma", familyLink: "👾 Voltar para a família",
     tabTimer: "⏳ Timer", tabStopwatch: "⏱️ Cronômetro", tabClock: "🌍 Relógio mundial",
     hours: "Horas", minutes: "Minutos", seconds: "Segundos",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 hora",
@@ -284,7 +284,7 @@ const I18N = {
     footer: "MonsterTime · membro da MonsterFamily 💜"
   },
   ru: {
-    settings: "Настройки", language: "Язык", familyLink: "👾 Часть MonsterFamily",
+    settings: "Настройки", language: "Язык", familyLink: "👾 Назад в семью",
     tabTimer: "⏳ Таймер", tabStopwatch: "⏱️ Секундомер", tabClock: "🌍 Мировое время",
     hours: "Часы", minutes: "Минуты", seconds: "Секунды",
     p1: "1 мин", p5: "5 мин", p10: "10 мин", p25: "25 мин", p60: "1 час",
@@ -298,7 +298,7 @@ const I18N = {
     footer: "MonsterTime · член семьи MonsterFamily 💜"
   },
   sv: {
-    settings: "Inställningar", language: "Språk", familyLink: "👾 En del av MonsterFamily",
+    settings: "Inställningar", language: "Språk", familyLink: "👾 Tillbaka till familjen",
     tabTimer: "⏳ Timer", tabStopwatch: "⏱️ Stoppur", tabClock: "🌍 Världsklocka",
     hours: "Timmar", minutes: "Minuter", seconds: "Sekunder",
     p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 timme",
@@ -312,7 +312,7 @@ const I18N = {
     footer: "MonsterTime · en medlem av MonsterFamily 💜"
   },
   th: {
-    settings: "การตั้งค่า", language: "ภาษา", familyLink: "👾 ส่วนหนึ่งของ MonsterFamily",
+    settings: "การตั้งค่า", language: "ภาษา", familyLink: "👾 กลับสู่ครอบครัว",
     tabTimer: "⏳ ตัวจับเวลา", tabStopwatch: "⏱️ นาฬิกาจับเวลา", tabClock: "🌍 นาฬิกาโลก",
     hours: "ชั่วโมง", minutes: "นาที", seconds: "วินาที",
     p1: "1 นาที", p5: "5 นาที", p10: "10 นาที", p25: "25 นาที", p60: "1 ชั่วโมง",
@@ -326,7 +326,7 @@ const I18N = {
     footer: "MonsterTime · สมาชิกของ MonsterFamily 💜"
   },
   tr: {
-    settings: "Ayarlar", language: "Dil", familyLink: "👾 MonsterFamily'nin bir parçası",
+    settings: "Ayarlar", language: "Dil", familyLink: "👾 Aileye dön",
     tabTimer: "⏳ Zamanlayıcı", tabStopwatch: "⏱️ Kronometre", tabClock: "🌍 Dünya saati",
     hours: "Saat", minutes: "Dakika", seconds: "Saniye",
     p1: "1 dk", p5: "5 dk", p10: "10 dk", p25: "25 dk", p60: "1 saat",
@@ -340,7 +340,7 @@ const I18N = {
     footer: "MonsterTime · MonsterFamily ailesinin bir üyesi 💜"
   },
   uk: {
-    settings: "Налаштування", language: "Мова", familyLink: "👾 Частина MonsterFamily",
+    settings: "Налаштування", language: "Мова", familyLink: "👾 Назад до родини",
     tabTimer: "⏳ Таймер", tabStopwatch: "⏱️ Секундомір", tabClock: "🌍 Світовий час",
     hours: "Години", minutes: "Хвилини", seconds: "Секунди",
     p1: "1 хв", p5: "5 хв", p10: "10 хв", p25: "25 хв", p60: "1 год",
@@ -354,7 +354,7 @@ const I18N = {
     footer: "MonsterTime · член родини MonsterFamily 💜"
   },
   vi: {
-    settings: "Cài đặt", language: "Ngôn ngữ", familyLink: "👾 Thành viên của MonsterFamily",
+    settings: "Cài đặt", language: "Ngôn ngữ", familyLink: "👾 Quay lại gia đình",
     tabTimer: "⏳ Hẹn giờ", tabStopwatch: "⏱️ Bấm giờ", tabClock: "🌍 Đồng hồ thế giới",
     hours: "Giờ", minutes: "Phút", seconds: "Giây",
     p1: "1 phút", p5: "5 phút", p10: "10 phút", p25: "25 phút", p60: "1 giờ",
@@ -368,7 +368,7 @@ const I18N = {
     footer: "MonsterTime · thành viên của MonsterFamily 💜"
   },
   zh: {
-    settings: "设置", language: "语言", familyLink: "👾 MonsterFamily 成员",
+    settings: "设置", language: "语言", familyLink: "👾 返回家族",
     tabTimer: "⏳ 计时器", tabStopwatch: "⏱️ 秒表", tabClock: "🌍 世界时钟",
     hours: "小时", minutes: "分钟", seconds: "秒",
     p1: "1 分钟", p5: "5 分钟", p10: "10 分钟", p25: "25 分钟", p60: "1 小时",
