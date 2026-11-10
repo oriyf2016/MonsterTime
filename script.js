@@ -17,65 +17,21 @@ const store = {
 };
 
 // ===== שפות =====
-// כדי להוסיף שפה: מוסיפים כאן אובייקט חדש עם אותם מפתחות, ואופציה ב-langSelect ב-index.html
-const I18N = {
-  he: {
-    dir: "rtl", locale: "he-IL",
-    settings: "הגדרות", language: "שפה",
-    familyLink: "👾 חלק מ-MonsterFamily",
-    tabTimer: "⏳ טיימר", tabStopwatch: "⏱️ סטופר", tabClock: "🌍 שעון עולמי",
-    hours: "שעות", minutes: "דקות", seconds: "שניות",
-    p1: "דקה", p5: "5 דק׳", p10: "10 דק׳", p25: "25 דק׳", p60: "שעה",
-    start: "▶ התחל", pause: "⏸ השהה", resume: "▶ המשך", reset: "↺ איפוס", lap: "🏁 הקפה",
-    ready: "מוכן להתחיל", counting: "סופר לאחור...", paused: "בהשהיה", done: "הזמן נגמר! 🎉",
-    chooseTime: "קודם צריך לבחור כמה זמן ⏳", timeUp: "⏰ הזמן נגמר!",
-    lapN: "הקפה {n}",
-    yourTime: "השעה אצלך", addCity: "+ הוסף עיר", chooseCity: "בחירת עיר",
-    noCities: "עוד לא הוספת ערים. בחר עיר מהרשימה 🌍", remove: "הסר את {city}",
-    sameTime: "אותה שעה כמו אצלך", ahead: "{t} לפנייך", behind: "{t} אחרייך",
-    hShort: "{n} שע׳", mShort: "{n} דק׳", and: " ו-",
-    footer: "MonsterTime · בן משפחה של MonsterFamily 💜",
-    cities: {
-      "Asia/Jerusalem": "ירושלים", "Europe/London": "לונדון", "America/New_York": "ניו יורק",
-      "America/Los_Angeles": "לוס אנג׳לס", "Asia/Tokyo": "טוקיו", "Europe/Paris": "פריז",
-      "Europe/Berlin": "ברלין", "Europe/Moscow": "מוסקבה", "Asia/Dubai": "דובאי",
-      "Asia/Kolkata": "מומבאי", "Asia/Shanghai": "בייג׳ינג", "Asia/Singapore": "סינגפור",
-      "Australia/Sydney": "סידני", "America/Toronto": "טורונטו", "America/Mexico_City": "מקסיקו סיטי",
-      "America/Sao_Paulo": "סאו פאולו", "Africa/Cairo": "קהיר", "Africa/Johannesburg": "יוהנסבורג"
-    }
-  },
-  en: {
-    dir: "ltr", locale: "en-US",
-    settings: "Settings", language: "Language",
-    familyLink: "👾 Part of MonsterFamily",
-    tabTimer: "⏳ Timer", tabStopwatch: "⏱️ Stopwatch", tabClock: "🌍 World clock",
-    hours: "Hours", minutes: "Minutes", seconds: "Seconds",
-    p1: "1 min", p5: "5 min", p10: "10 min", p25: "25 min", p60: "1 hour",
-    start: "▶ Start", pause: "⏸ Pause", resume: "▶ Resume", reset: "↺ Reset", lap: "🏁 Lap",
-    ready: "Ready to start", counting: "Counting down...", paused: "Paused", done: "Time's up! 🎉",
-    chooseTime: "Pick a time first ⏳", timeUp: "⏰ Time's up!",
-    lapN: "Lap {n}",
-    yourTime: "Your time", addCity: "+ Add city", chooseCity: "Choose a city",
-    noCities: "No cities yet. Pick one from the list 🌍", remove: "Remove {city}",
-    sameTime: "Same time as you", ahead: "{t} ahead", behind: "{t} behind",
-    hShort: "{n}h", mShort: "{n}m", and: " ",
-    footer: "MonsterTime · a member of MonsterFamily 💜",
-    cities: {
-      "Asia/Jerusalem": "Jerusalem", "Europe/London": "London", "America/New_York": "New York",
-      "America/Los_Angeles": "Los Angeles", "Asia/Tokyo": "Tokyo", "Europe/Paris": "Paris",
-      "Europe/Berlin": "Berlin", "Europe/Moscow": "Moscow", "Asia/Dubai": "Dubai",
-      "Asia/Kolkata": "Mumbai", "Asia/Shanghai": "Beijing", "Asia/Singapore": "Singapore",
-      "Australia/Sydney": "Sydney", "America/Toronto": "Toronto", "America/Mexico_City": "Mexico City",
-      "America/Sao_Paulo": "São Paulo", "Africa/Cairo": "Cairo", "Africa/Johannesburg": "Johannesburg"
-    }
-  }
-};
-
+// כל התרגומים נמצאים בקובץ lang.js (LANGS ו-I18N)
 let lang = store.get("monster-lang", "he");
 if (!I18N[lang]) lang = "he";
+const langInfo = () => LANGS.find(l => l.code === lang) || LANGS[0];
+
+// ממלא את רשימת השפות בהגדרות
+LANGS.forEach(l => {
+  const opt = document.createElement("option");
+  opt.value = l.code;
+  opt.textContent = l.name;
+  $("langSelect").appendChild(opt);
+});
 
 function t(key, vars = {}) {
-  let s = I18N[lang][key] ?? I18N.he[key] ?? key;
+  let s = I18N[lang][key] ?? I18N.en[key] ?? key;
   for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, v);
   return s;
 }
@@ -87,9 +43,8 @@ function setText(el, key) {
 }
 
 function applyLanguage() {
-  const L = I18N[lang];
   document.documentElement.lang = lang;
-  document.documentElement.dir = L.dir;
+  document.documentElement.dir = langInfo().dir;
   document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
   $("langSelect").value = lang;
@@ -356,7 +311,8 @@ const ALL_ZONES = Object.keys(I18N.he.cities);
 const DEFAULT_ZONES = ["Europe/London", "America/New_York", "Asia/Tokyo"];
 let myZones = store.get("monstertime-cities", DEFAULT_ZONES).filter(z => ALL_ZONES.includes(z));
 
-const cityName = zone => I18N[lang].cities[zone] || zone;
+// לשפות בלי תרגום של שמות ערים, מוצג השם באנגלית
+const cityName = zone => (I18N[lang].cities || I18N.en.cities)[zone] || I18N.en.cities[zone] || zone;
 
 // כמה דקות אזור זמן מסוים מקדים את UTC
 function zoneOffsetMinutes(zone, date) {
@@ -417,7 +373,7 @@ function renderCities() {
 
 function tickClock() {
   const now = new Date();
-  const loc = I18N[lang].locale;
+  const loc = langInfo().locale;
   $("localTime").textContent = now.toLocaleTimeString(loc, { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   $("localDate").textContent = now.toLocaleDateString(loc, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   document.querySelectorAll("[data-time]").forEach(el => {
