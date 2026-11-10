@@ -382,3 +382,32 @@ const I18N = {
     footer: "MonsterTime · MonsterFamily 家族成员 💜"
   }
 };
+
+// ===== תרגומים לתפריט הלחיצה הימנית =====
+const CTX_I18N = {
+  he: { ctxCopyLink: "🔗 העתק קישור", ctxCopied: "הקישור הועתק ✅", ctxReload: "↻ רענן את הדף" },
+  en: { ctxCopyLink: "🔗 Copy link", ctxCopied: "Link copied ✅", ctxReload: "↻ Reload page" },
+  ar: { ctxCopyLink: "🔗 نسخ الرابط", ctxCopied: "تم نسخ الرابط ✅", ctxReload: "↻ إعادة تحميل الصفحة" },
+  am: { ctxCopyLink: "🔗 ማገናኛ ቅዳ", ctxCopied: "ማገናኛው ተቀድቷል ✅", ctxReload: "↻ ገጹን አድስ" },
+  de: { ctxCopyLink: "🔗 Link kopieren", ctxCopied: "Link kopiert ✅", ctxReload: "↻ Seite neu laden" },
+  el: { ctxCopyLink: "🔗 Αντιγραφή συνδέσμου", ctxCopied: "Ο σύνδεσμος αντιγράφηκε ✅", ctxReload: "↻ Ανανέωση σελίδας" },
+  es: { ctxCopyLink: "🔗 Copiar enlace", ctxCopied: "Enlace copiado ✅", ctxReload: "↻ Recargar página" },
+  fa: { ctxCopyLink: "🔗 کپی پیوند", ctxCopied: "پیوند کپی شد ✅", ctxReload: "↻ بارگذاری دوباره صفحه" },
+  fr: { ctxCopyLink: "🔗 Copier le lien", ctxCopied: "Lien copié ✅", ctxReload: "↻ Recharger la page" },
+  hi: { ctxCopyLink: "🔗 लिंक कॉपी करें", ctxCopied: "लिंक कॉपी हो गया ✅", ctxReload: "↻ पेज रीलोड करें" },
+  id: { ctxCopyLink: "🔗 Salin tautan", ctxCopied: "Tautan disalin ✅", ctxReload: "↻ Muat ulang halaman" },
+  it: { ctxCopyLink: "🔗 Copia link", ctxCopied: "Link copiato ✅", ctxReload: "↻ Ricarica pagina" },
+  ja: { ctxCopyLink: "🔗 リンクをコピー", ctxCopied: "リンクをコピーしました ✅", ctxReload: "↻ ページを再読み込み" },
+  ko: { ctxCopyLink: "🔗 링크 복사", ctxCopied: "링크가 복사되었습니다 ✅", ctxReload: "↻ 페이지 새로고침" },
+  nl: { ctxCopyLink: "🔗 Link kopiëren", ctxCopied: "Link gekopieerd ✅", ctxReload: "↻ Pagina vernieuwen" },
+  pl: { ctxCopyLink: "🔗 Kopiuj link", ctxCopied: "Link skopiowany ✅", ctxReload: "↻ Odśwież stronę" },
+  pt: { ctxCopyLink: "🔗 Copiar link", ctxCopied: "Link copiado ✅", ctxReload: "↻ Recarregar página" },
+  ru: { ctxCopyLink: "🔗 Копировать ссылку", ctxCopied: "Ссылка скопирована ✅", ctxReload: "↻ Обновить страницу" },
+  sv: { ctxCopyLink: "🔗 Kopiera länk", ctxCopied: "Länken kopierad ✅", ctxReload: "↻ Ladda om sidan" },
+  th: { ctxCopyLink: "🔗 คัดลอกลิงก์", ctxCopied: "คัดลอกลิงก์แล้ว ✅", ctxReload: "↻ โหลดหน้าใหม่" },
+  tr: { ctxCopyLink: "🔗 Bağlantıyı kopyala", ctxCopied: "Bağlantı kopyalandı ✅", ctxReload: "↻ Sayfayı yenile" },
+  uk: { ctxCopyLink: "🔗 Копіювати посилання", ctxCopied: "Посилання скопійовано ✅", ctxReload: "↻ Оновити сторінку" },
+  vi: { ctxCopyLink: "🔗 Sao chép liên kết", ctxCopied: "Đã sao chép liên kết ✅", ctxReload: "↻ Tải lại trang" },
+  zh: { ctxCopyLink: "🔗 复制链接", ctxCopied: "链接已复制 ✅", ctxReload: "↻ 重新加载页面" }
+};
+for (const [code, keys] of Object.entries(CTX_I18N)) Object.assign(I18N[code], keys);

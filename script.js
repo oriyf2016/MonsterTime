@@ -413,3 +413,82 @@ showView(location.hash.slice(1));
 setTimerFromInputs();
 drawSw();
 setInterval(tickClock, 1000);
+
+// הפריטים בתפריט הלחיצה הימנית של MonsterTime
+function ctxItems() {
+  return [
+    { label: t("tabTimer"), action: () => { location.hash = "timer"; } },
+    { label: t("tabStopwatch"), action: () => { location.hash = "stopwatch"; } },
+    { label: t("tabClock"), action: () => { location.hash = "clock"; } },
+    "sep",
+    { label: "⚙️ " + t("settings"), action: () => setSettingsOpen(true) },
+    { label: t("ctxCopyLink"), action: copyLink },
+    { label: t("ctxReload"), action: () => location.reload() }
+  ];
+}
+
+// ===== תפריט לחיצה ימנית של MonsterFamily =====
+// בשדות הקלדה ובטקסט מסומן נשאר התפריט הרגיל של הדפדפן, כדי שאפשר יהיה להעתיק ולהדביק
+const ctxMenu = document.getElementById("ctxMenu");
+
+function closeCtx() { ctxMenu.hidden = true; }
+
+function openCtx(x, y) {
+  ctxMenu.innerHTML = "";
+  ctxItems().forEach(item => {
+    if (item === "sep") {
+      const hr = document.createElement("div");
+      hr.className = "ctx-sep";
+      ctxMenu.appendChild(hr);
+      return;
+    }
+    const b = document.createElement("button");
+    b.className = "ctx-item";
+    b.setAttribute("role", "menuitem");
+    b.textContent = item.label;
+    b.addEventListener("click", e => {
+      e.stopPropagation();
+      closeCtx();
+      item.action();
+    });
+    ctxMenu.appendChild(b);
+  });
+  ctxMenu.hidden = false;
+  // שומר שהתפריט לא יצא מהמסך
+  const r = ctxMenu.getBoundingClientRect();
+  // בשפות מימין לשמאל התפריט נפתח לצד שמאל של העכבר, כמו בתפריט הרגיל
+  const startX = document.documentElement.dir === "rtl" ? x - r.width : x;
+  ctxMenu.style.left = Math.max(8, Math.min(startX, innerWidth - r.width - 8)) + "px";
+  ctxMenu.style.top = Math.max(8, Math.min(y, innerHeight - r.height - 8)) + "px";
+  ctxMenu.querySelector(".ctx-item")?.focus();
+}
+
+async function copyLink() {
+  try {
+    await navigator.clipboard.writeText(location.href);
+    toast(t("ctxCopied"));
+  } catch {
+    toast(location.href);
+  }
+}
+
+document.addEventListener("contextmenu", e => {
+  const typing = e.target.closest("input, textarea, select, [contenteditable='true']");
+  const selected = String(window.getSelection()).trim();
+  if (typing || selected) return;
+  e.preventDefault();
+  openCtx(e.clientX, e.clientY);
+});
+document.addEventListener("click", e => { if (!ctxMenu.contains(e.target)) closeCtx(); });
+document.addEventListener("keydown", e => {
+  if (ctxMenu.hidden) return;
+  if (e.key === "Escape") return closeCtx();
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    const items = [...ctxMenu.querySelectorAll(".ctx-item")];
+    const i = items.indexOf(document.activeElement);
+    const next = e.key === "ArrowDown" ? (i + 1) % items.length : (i - 1 + items.length) % items.length;
+    items[next].focus();
+  }
+});
+["scroll", "resize", "blur"].forEach(ev => window.addEventListener(ev, closeCtx));
