@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MonsterTime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<header>
+  <a class="logo" href="#timer" aria-label="MonsterTime">
+    <svg viewBox="0 0 200 200" aria-hidden="true">
+      <path d="M62 52 L48 18 L84 40 Z" fill="#5eead4"/>
+      <path d="M138 52 L152 18 L116 40 Z" fill="#5eead4"/>
+      <ellipse cx="100" cy="112" rx="72" ry="70" fill="#14b8a6"/>
+      <circle cx="100" cy="100" r="34" fill="#fff"/>
+      <line x1="100" y1="100" x2="100" y2="78" stroke="#0f172a" stroke-width="7" stroke-linecap="round"/>
+      <line x1="100" y1="100" x2="116" y2="108" stroke="#0f172a" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="100" cy="100" r="5" fill="#0f172a"/>
+      <path d="M78 150 Q100 166 122 150" stroke="#0f172a" stroke-width="7" fill="none" stroke-linecap="round"/>
+    </svg>
+    <span>Monster<span class="accent">Time</span></span>
+  </a>
+
+  <div class="header-actions">
+    <a class="family-link" id="familyLink" data-i18n="familyLink" hidden></a>
+    <div class="settings">
+      <button class="icon-btn" id="settingsBtn" aria-expanded="false" aria-controls="settingsPanel" data-i18n-aria="settings">⚙️</button>
+      <div class="settings-panel" id="settingsPanel">
+        <div class="settings-title" data-i18n="settings"></div>
+        <label class="setting-row">
+          <span data-i18n="language"></span>
+          <select id="langSelect">
+            <option value="he">עברית</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab" role="tab" data-view="timer" id="tab-timer" data-i18n="tabTimer"></button>
+  <button class="tab" role="tab" data-view="stopwatch" id="tab-stopwatch" data-i18n="tabStopwatch"></button>
+  <button class="tab" role="tab" data-view="clock" id="tab-clock" data-i18n="tabClock"></button>
+</nav>
+
+<main>
+  <!-- ===== Timer ===== -->
+  <section class="view" id="view-timer" role="tabpanel" aria-labelledby="tab-timer">
+    <div class="ring-wrap">
+      <svg class="ring" viewBox="0 0 220 220" aria-hidden="true">
+        <circle class="ring-bg" cx="110" cy="110" r="96"/>
+        <circle class="ring-fg" id="timerRing" cx="110" cy="110" r="96"/>
+      </svg>
+      <div class="ring-center">
+        <div class="big-time" id="timerDisplay">05:00</div>
+        <div class="hint" id="timerHint" data-i18n="ready"></div>
+      </div>
+    </div>
+
+    <div class="time-inputs" id="timerInputs">
+      <label><input type="number" id="tH" min="0" max="99" value="0" inputmode="numeric"><span data-i18n="hours"></span></label>
+      <label><input type="number" id="tM" min="0" max="59" value="5" inputmode="numeric"><span data-i18n="minutes"></span></label>
+      <label><input type="number" id="tS" min="0" max="59" value="0" inputmode="numeric"><span data-i18n="seconds"></span></label>
+    </div>
+
+    <div class="presets">
+      <button class="chip" data-min="1" data-i18n="p1"></button>
+      <button class="chip" data-min="5" data-i18n="p5"></button>
+      <button class="chip" data-min="10" data-i18n="p10"></button>
+      <button class="chip" data-min="25" data-i18n="p25"></button>
+      <button class="chip" data-min="60" data-i18n="p60"></button>
+    </div>
+
+    <div class="controls">
+      <button class="btn primary" id="timerStart" data-i18n="start"></button>
+      <button class="btn" id="timerReset" data-i18n="reset"></button>
+    </div>
+  </section>
+
+  <!-- ===== Stopwatch ===== -->
+  <section class="view" id="view-stopwatch" role="tabpanel" aria-labelledby="tab-stopwatch" hidden>
+    <div class="sw-display">
+      <span class="big-time" id="swDisplay">00:00</span><span class="ms" id="swMs">.00</span>
+    </div>
+    <div class="controls">
+      <button class="btn primary" id="swStart" data-i18n="start"></button>
+      <button class="btn" id="swLap" data-i18n="lap" disabled></button>
+      <button class="btn" id="swReset" data-i18n="reset" disabled></button>
+    </div>
+    <ol class="laps" id="laps"></ol>
+  </section>
+
+  <!-- ===== World clock ===== -->
+  <section class="view" id="view-clock" role="tabpanel" aria-labelledby="tab-clock" hidden>
+    <div class="local-clock">
+      <div class="hint" data-i18n="yourTime"></div>
+      <div class="big-time" id="localTime">--:--</div>
+      <div class="hint" id="localDate"></div>
+    </div>
+
+    <div class="add-city">
+      <select id="citySelect" data-i18n-aria="chooseCity"></select>
+      <button class="btn primary" id="addCity" data-i18n="addCity"></button>
+    </div>
+
+    <div class="cities" id="cities"></div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<footer>© <span id="year"></span> <span data-i18n="footer"></span></footer>
+
+<script src="script.js"></script>
+</body>
+</html>
