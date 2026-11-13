@@ -45,6 +45,7 @@
   <button class="tab" role="tab" data-view="timer" id="tab-timer" data-i18n="tabTimer"></button>
   <button class="tab" role="tab" data-view="stopwatch" id="tab-stopwatch" data-i18n="tabStopwatch"></button>
   <button class="tab" role="tab" data-view="clock" id="tab-clock" data-i18n="tabClock"></button>
+  <button class="tab" role="tab" data-view="reminders" id="tab-reminders" data-i18n="tabReminders"></button>
 </nav>
 
 <main>
@@ -75,6 +76,11 @@
       <button class="chip" data-min="60" data-i18n="p60"></button>
     </div>
 
+    <div class="sound-row">
+      <label class="sound-label"><span data-i18n="sound"></span><select id="timerSound"></select></label>
+      <button type="button" class="chip" data-test="timerSound" data-i18n="test"></button>
+    </div>
+
     <div class="controls">
       <button class="btn primary" id="timerStart" data-i18n="start"></button>
       <button class="btn" id="timerReset" data-i18n="reset"></button>
@@ -91,6 +97,11 @@
       <button class="btn" id="swLap" data-i18n="lap" disabled></button>
       <button class="btn" id="swReset" data-i18n="reset" disabled></button>
     </div>
+    <div class="sound-row">
+      <label class="sound-label"><span data-i18n="sound"></span><select id="swSound"></select></label>
+      <button type="button" class="chip" data-test="swSound" data-i18n="test"></button>
+    </div>
+
     <ol class="laps" id="laps"></ol>
   </section>
 
@@ -108,6 +119,23 @@
     </div>
 
     <div class="cities" id="cities"></div>
+  </section>
+  <!-- ===== Reminders ===== -->
+  <section class="view" id="view-reminders" role="tabpanel" aria-labelledby="tab-reminders" hidden>
+    <form class="rem-form" id="remForm">
+      <input type="text" id="remLabel" maxlength="80" data-i18n-placeholder="remWhat" autocomplete="off">
+      <div class="rem-grid">
+        <label class="field"><span data-i18n="remTime"></span><input type="time" id="remTime"></label>
+        <label class="field"><span data-i18n="remPlace"></span><select id="remZone"></select></label>
+      </div>
+      <div class="sound-row">
+      <label class="sound-label"><span data-i18n="sound"></span><select id="remSound"></select></label>
+      <button type="button" class="chip" data-test="remSound" data-i18n="test"></button>
+    </div>
+      <button class="btn primary wide" type="submit" data-i18n="addReminder"></button>
+    </form>
+    <p class="hint rem-note" data-i18n="remNote"></p>
+    <div class="cities" id="reminders"></div>
   </section>
 </main>
 

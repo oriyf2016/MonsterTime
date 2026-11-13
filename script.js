@@ -47,9 +47,12 @@ function applyLanguage() {
   document.documentElement.dir = langInfo().dir;
   document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
   $("langSelect").value = lang;
   drawLaps();
   renderCities();
+  fillSoundSelects();
+  renderReminders();
 }
 
 // ===== חלון הגדרות =====
@@ -83,27 +86,8 @@ function toast(msg) {
   toastTimer = setTimeout(() => el.classList.remove("show"), 3500);
 }
 
-// צפצוף כשהטיימר נגמר
-function beep() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    [0, 0.35, 0.7].forEach(offset => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.value = 880;
-      gain.gain.setValueAtTime(0.0001, ctx.currentTime + offset);
-      gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + offset + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + offset + 0.28);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(ctx.currentTime + offset);
-      osc.stop(ctx.currentTime + offset + 0.3);
-    });
-  } catch {}
-}
-
 // ===== לשוניות =====
-const VIEWS = ["timer", "stopwatch", "clock"];
+const VIEWS = ["timer", "stopwatch", "clock", "reminders"];
 function showView(name) {
   if (!VIEWS.includes(name)) name = "timer";
   VIEWS.forEach(v => {
@@ -194,7 +178,7 @@ function finishTimer() {
   setText($("timerHint"), "done");
   document.title = `${t("timeUp")} · MonsterTime`;
   toast(t("timeUp"));
-  beep();
+  playSound($("timerSound").value, 2);
 }
 
 function resetTimer() {
@@ -291,6 +275,7 @@ $("swLap").addEventListener("click", () => {
   const sum = laps.reduce((a, b) => a + b, 0);
   laps.push(swNow() - sum);
   drawLaps();
+  playSound($("swSound").value);
 });
 
 $("swReset").addEventListener("click", () => {
@@ -402,6 +387,229 @@ $("cities").addEventListener("click", e => {
   renderCities();
 });
 
+// ===== צלילים =====
+// כל הצלילים נוצרים בקוד (Web Audio), אז אין צורך בקבצי שמע
+const SOUND_KEYS = ["beep", "bell", "chime", "digital", "monster", "none"];
+const SOUND_LABEL = { beep: "soundBeep", bell: "soundBell", chime: "soundChime", digital: "soundDigital", monster: "soundMonster", none: "soundNone" };
+const SOUND_LEN = { beep: 0.8, bell: 1.6, chime: 1.1, digital: 1.0, monster: 1.2 }; // אורך כל צליל בשניות
+
+let audioCtx = null;
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+// דפדפנים מאפשרים צליל רק אחרי שהמשתמש לחץ על משהו, אז מכינים את הצליל כבר בלחיצה הראשונה
+document.addEventListener("pointerdown", () => { try { getCtx(); } catch {} }, { once: true });
+
+function tone(ctx, { freq, start, dur, type = "sine", vol = 0.3, endFreq }) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, start);
+  if (endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, start + dur);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(vol, start + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(start);
+  osc.stop(start + dur + 0.05);
+}
+
+const SOUNDS = {
+  beep: (ctx, s) => [0, 0.35].forEach(o => tone(ctx, { freq: 880, start: s + o, dur: 0.25 })),
+  bell: (ctx, s) => {
+    tone(ctx, { freq: 660, start: s, dur: 1.5, vol: 0.35 });
+    tone(ctx, { freq: 1320, start: s, dur: 1.0, vol: 0.12 });
+    tone(ctx, { freq: 1980, start: s, dur: 0.6, vol: 0.06 });
+  },
+  chime: (ctx, s) => [523, 659, 784, 1047].forEach((f, i) => tone(ctx, { freq: f, start: s + i * 0.18, dur: 0.5, type: "triangle", vol: 0.28 })),
+  digital: (ctx, s) => [0, 0.12, 0.24, 0.36, 0.6, 0.72, 0.84].forEach(o => tone(ctx, { freq: 1000, start: s + o, dur: 0.08, type: "square", vol: 0.12 })),
+  monster: (ctx, s) => {
+    tone(ctx, { freq: 140, endFreq: 55, start: s, dur: 1.0, type: "sawtooth", vol: 0.25 });
+    tone(ctx, { freq: 147, endFreq: 58, start: s, dur: 1.0, type: "sawtooth", vol: 0.18 });
+  }
+};
+
+function playSound(name, times = 1) {
+  if (!SOUNDS[name]) return; // "none" או צליל לא מוכר
+  try {
+    const ctx = getCtx();
+    for (let i = 0; i < times; i++) SOUNDS[name](ctx, ctx.currentTime + 0.05 + i * (SOUND_LEN[name] + 0.15));
+  } catch {}
+}
+
+// ממלא את כל רשימות הצלילים בשפה הנוכחית, ושומר את הבחירה
+const SOUND_SELECTS = { timerSound: "beep", swSound: "beep", remSound: "chime" };
+function fillSoundSelects() {
+  Object.entries(SOUND_SELECTS).forEach(([id, fallback]) => {
+    const sel = $(id);
+    const current = sel.value || store.get("monstertime-" + id, fallback);
+    sel.innerHTML = "";
+    SOUND_KEYS.forEach(key => {
+      const opt = document.createElement("option");
+      opt.value = key;
+      opt.textContent = t(SOUND_LABEL[key]);
+      sel.appendChild(opt);
+    });
+    sel.value = SOUND_KEYS.includes(current) ? current : fallback;
+  });
+}
+Object.keys(SOUND_SELECTS).forEach(id => {
+  $(id).addEventListener("change", e => store.set("monstertime-" + id, e.target.value));
+});
+document.querySelectorAll("[data-test]").forEach(btn => {
+  btn.addEventListener("click", () => playSound($(btn.dataset.test).value));
+});
+
+// ===== תזכורות =====
+// כל תזכורת: { id, label, time: "HH:MM", zone: "local" או אזור זמן, sound, at: מתי היא תצלצל, done }
+let reminders = store.get("monstertime-reminders", []);
+const saveReminders = () => store.set("monstertime-reminders", reminders);
+const placeName = zone => (zone === "local" ? t("remLocal") : cityName(zone));
+
+// מחשב מתי השעה שנבחרה תגיע בפעם הבאה במקום שנבחר
+function nextOccurrence(time, zone) {
+  const [h, m] = time.split(":").map(Number);
+  const now = Date.now();
+  for (let add = 0; add < 3; add++) {
+    const base = new Date(now + add * 86400000);
+    let at;
+    if (zone === "local") {
+      at = new Date(base.getFullYear(), base.getMonth(), base.getDate(), h, m, 0, 0).getTime();
+    } else {
+      const p = new Intl.DateTimeFormat("en-US", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" })
+        .formatToParts(base).reduce((o, x) => (o[x.type] = x.value, o), {});
+      const wall = Date.UTC(+p.year, +p.month - 1, +p.day, h, m);
+      at = wall - zoneOffsetMinutes(zone, new Date(wall)) * 60000;
+      at = wall - zoneOffsetMinutes(zone, new Date(at)) * 60000;
+    }
+    if (at > now + 1000) return at;
+  }
+  return now + 86400000;
+}
+
+function durationText(ms) {
+  if (ms < 60000) return t("lessMinute");
+  const totalMin = Math.round(ms / 60000);
+  const h = Math.floor(totalMin / 60), m = totalMin % 60;
+  return (h ? t("hShort", { n: h }) : "") + (h && m ? t("and") : "") + (m ? t("mShort", { n: m }) : "");
+}
+
+function fillZoneSelect() {
+  const sel = $("remZone");
+  const current = sel.value || "local";
+  sel.innerHTML = "";
+  ["local", ...ALL_ZONES].forEach(zone => {
+    const opt = document.createElement("option");
+    opt.value = zone;
+    opt.textContent = placeName(zone);
+    sel.appendChild(opt);
+  });
+  sel.value = current;
+}
+
+function renderReminders() {
+  fillZoneSelect();
+  const box = $("reminders");
+  box.innerHTML = "";
+  if (reminders.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-cities";
+    empty.textContent = t("noReminders");
+    box.appendChild(empty);
+    return;
+  }
+  [...reminders].sort((a, b) => a.at - b.at).forEach(r => {
+    const row = document.createElement("div");
+    row.className = "city reminder" + (r.done ? " done" : "");
+    const info = document.createElement("div");
+    const name = document.createElement("div");
+    name.className = "city-name";
+    name.textContent = r.label || t("remDefault"); // textContent ולא innerHTML, כדי שאי אפשר יהיה להכניס קוד
+    const meta = document.createElement("div");
+    meta.className = "city-meta";
+    meta.textContent = `${placeName(r.zone)} · 🔊 ${t(SOUND_LABEL[r.sound] || "soundNone")}`;
+    info.append(name, meta);
+    const right = document.createElement("div");
+    right.className = "city-right";
+    const when = document.createElement("div");
+    when.className = "rem-when";
+    const time = document.createElement("div");
+    time.className = "city-time";
+    time.textContent = r.time;
+    const left = document.createElement("div");
+    left.className = "city-meta";
+    left.dataset.remIn = r.id;
+    when.append(time, left);
+    const del = document.createElement("button");
+    del.className = "remove";
+    del.dataset.removeRem = r.id;
+    del.textContent = "✕";
+    del.setAttribute("aria-label", t("remove", { city: r.label || t("remDefault") }));
+    right.append(when, del);
+    row.append(info, right);
+    box.appendChild(row);
+  });
+  updateReminderCountdowns();
+}
+
+function updateReminderCountdowns() {
+  const now = Date.now();
+  document.querySelectorAll("[data-rem-in]").forEach(el => {
+    const r = reminders.find(x => x.id === el.dataset.remIn);
+    if (!r) return;
+    el.textContent = r.done ? t("remDone") : t("remIn", { t: durationText(r.at - now) });
+  });
+}
+
+function checkReminders() {
+  const now = Date.now();
+  let changed = false;
+  reminders.forEach(r => {
+    if (r.done || now < r.at) return;
+    r.done = true;
+    changed = true;
+    const label = r.label || t("remDefault");
+    toast(`${t("remDone")} ${label}`);
+    playSound(r.sound, 3);
+    document.title = `${t("remDone")} · MonsterTime`;
+    try {
+      if ("Notification" in window && Notification.permission === "granted") new Notification(t("remDone"), { body: label });
+    } catch {}
+  });
+  if (changed) { saveReminders(); renderReminders(); }
+  else updateReminderCountdowns();
+}
+
+$("remForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const time = $("remTime").value;
+  if (!time) { toast(t("chooseRemTime")); return; }
+  const zone = $("remZone").value;
+  reminders.push({
+    id: String(Date.now()),
+    label: $("remLabel").value.trim().slice(0, 80),
+    time, zone,
+    sound: $("remSound").value,
+    at: nextOccurrence(time, zone),
+    done: false
+  });
+  saveReminders();
+  $("remLabel").value = "";
+  renderReminders();
+  // מבקש רשות להודעות של הדפדפן, כדי שהתזכורת תופיע גם כשהלשונית ברקע
+  try { if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); } catch {}
+});
+
+$("reminders").addEventListener("click", e => {
+  const id = e.target.dataset.removeRem;
+  if (!id) return;
+  reminders = reminders.filter(r => r.id !== id);
+  saveReminders();
+  renderReminders();
+});
+
 // ===== התחלה =====
 if (MONSTERFAMILY_URL) {
   $("familyLink").href = MONSTERFAMILY_URL;
@@ -413,6 +621,7 @@ showView(location.hash.slice(1));
 setTimerFromInputs();
 drawSw();
 setInterval(tickClock, 1000);
+setInterval(checkReminders, 1000);
 
 // הפריטים בתפריט הלחיצה הימנית של MonsterTime
 function ctxItems() {
@@ -420,6 +629,7 @@ function ctxItems() {
     { label: t("tabTimer"), action: () => { location.hash = "timer"; } },
     { label: t("tabStopwatch"), action: () => { location.hash = "stopwatch"; } },
     { label: t("tabClock"), action: () => { location.hash = "clock"; } },
+    { label: t("tabReminders"), action: () => { location.hash = "reminders"; } },
     "sep",
     { label: "⚙️ " + t("settings"), action: () => setSettingsOpen(true) },
     { label: t("ctxCopyLink"), action: copyLink },
